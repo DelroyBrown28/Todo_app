@@ -81,18 +81,21 @@ def logout():
     session.pop("user")
     return redirect(url_for("login"))
 
+@app.route("/add_task")
+def add_task():
+    return render_template("add_task.html")
+
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
     # Grabs the sessions user's username from DB
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
-
-    if session["user"]:    
+    if session["user"]:
         return render_template("profile.html", username=username)
-
     return redirect(url_for("login"))
-    
+
+
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=os.environ.get("PORT"),
